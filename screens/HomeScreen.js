@@ -29,9 +29,10 @@ export default class HomeScreen extends React.Component {
   }
 
   getNewCatArray = () => {
+    console.log(this.state.dataSource)
     for(var i=0;i<5;i++){
-      this.getNewCat();
       this.setState(state => {
+        this.getNewCat();
         const catArray = state.catArray.concat(state.dataSource);
         //not sure but this isn't currently working
         return {
@@ -40,6 +41,7 @@ export default class HomeScreen extends React.Component {
         };
       });
     }
+    console.log(this.state.catArray)
   }
 
   getNewCat () {
