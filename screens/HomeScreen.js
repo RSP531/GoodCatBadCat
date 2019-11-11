@@ -23,18 +23,23 @@ export default class HomeScreen extends React.Component {
     }
   }
   componentDidMount() {
-    return fetch('https://api.thecatapi.com/v1/images/search')
-      .then((response) => response.json() )
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson[0].url
-        })
-      })
-      .catch((error) => {
-        console.log(error)
-      });
+    this.getNewCat()
   }
+
+  getNewCat () {
+    return fetch('https://api.thecatapi.com/v1/images/search')
+    .then((response) => response.json() )
+    .then((responseJson) => {
+      this.setState({
+        isLoading: false,
+        dataSource: responseJson[0].url
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
+  
   render() {
   return (
     <View style={styles.container}>
@@ -55,7 +60,12 @@ export default class HomeScreen extends React.Component {
         <View style={styles.getStartedContainer}>
           <DevelopmentModeNotice />
 
-          <Text style={styles.getStartedText}>Good or Bad?, you Decide</Text>
+          <Text style={styles.getStartedText}>
+            Lara this is an app I am building
+          </Text>
+          <Text>
+            You rank if the cat is good or bad
+          </Text>
             <Image 
               style={{width: 300, height: 300}}
               source = {{uri:`${this.state.dataSource}`}}
@@ -64,7 +74,7 @@ export default class HomeScreen extends React.Component {
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
             <MonoText>screens/HomeScreen.js</MonoText>
           </View>
-          
+
           <Text style={styles.getStartedText}>
             building GoodCatBadCat HAS COMMENCED agin!!!       
           </Text>
