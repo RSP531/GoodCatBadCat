@@ -50,17 +50,23 @@ export default class HomeScreen extends React.Component {
   }
 
   getNewCat () {
-    return fetch('https://api.thecatapi.com/v1/images/search')
-    .then((response) => response.json() )
-    .then((responseJson) => {
-      this.setState({
-        isLoading: false,
-        dataSource: responseJson[0].url
-      })
+    return new Promise((resolve, reject) => {
+      fetch('https://api.thecatapi.com/v1/images/search')
+        .then((response) => response.json() )
+        .then((responseJson) => {
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson[0].url
+          })
+          console.log(1)
+          return resolve(response)
+        })
+      .catch((error) => {
+        return reject(error)
+        console.log(error)
+      });
+
     })
-    .catch((error) => {
-      console.log(error)
-    });
   }
 
   render() {
