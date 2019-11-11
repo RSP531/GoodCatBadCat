@@ -92,7 +92,7 @@ export default class HomeScreen extends React.Component {
           </Text>
             <Image 
               style={{width: 300, height: 300}}
-              source = {{uri:`${this.state.dataSource}`}}
+              source = {{uri:`${this.state.catArray[0]}`}}
             />
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
