@@ -25,26 +25,28 @@ export default class HomeScreen extends React.Component {
   }
   componentDidMount() {
     this.getNewCat()
-    this.getNewCatArray()
+
+    this.getNewCatArray();
+    this.getNewCatArray();
+    this.getNewCatArray();
+    this.getNewCatArray();
   }
 
   getNewCatArray = () => {
-    console.log(this.state.dataSource)
-    console.log(2)
-    for(var i=0;i<5;i++){
-      console.log(3)
-      this.setState(state => {
-        var cat = this.getNewCat();
-        console.log(cat)
-        const catArray = state.catArray.concat(state.dataSource);
-        //not sure but this isn't currently working
-        return {
-          catArray,
-          dataSource : state.dataSource,
-        };
-      });
-    }
-    console.log(this.state.catArray)
+    return fetch('https://api.thecatapi.com/v1/images/search')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState( state => {
+        const catArray = state.catArray.concat(responseJson[0].url)
+          return {
+            catArray,
+            dataSource: null,
+          }
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    });
   }
 
   getNewCat () {
@@ -68,6 +70,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    //console.log(this.state.catArray)
   return (
     <View style={styles.container}>
       <ScrollView
@@ -95,7 +98,7 @@ export default class HomeScreen extends React.Component {
           </Text>
             <Image 
               style={{width: 300, height: 300}}
-              source = {{uri:`${this.state.dataSource}`}}
+              source = {{uri:`${this.state.catArray[0]}`}}
             />
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
