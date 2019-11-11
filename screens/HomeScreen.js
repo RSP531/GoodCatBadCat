@@ -20,10 +20,26 @@ export default class HomeScreen extends React.Component {
     this.state = {
       isLoading:true,
       dataSource:null,
+      catArray: [],
     }
   }
   componentDidMount() {
     this.getNewCat()
+    this.getNewCatArray()
+  }
+
+  getNewCatArray = () => {
+    for(var i=0;i<5;i++){
+      this.getNewCat();
+      this.setState(state => {
+        const catArray = state.catArray.concat(state.dataSource);
+        //not sure but this isn't currently working
+        return {
+          catArray,
+          dataSource : state.dataSource,
+        };
+      });
+    }
   }
 
   getNewCat () {
@@ -39,7 +55,7 @@ export default class HomeScreen extends React.Component {
       console.log(error)
     });
   }
-  
+
   render() {
   return (
     <View style={styles.container}>
