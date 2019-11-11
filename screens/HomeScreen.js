@@ -30,9 +30,12 @@ export default class HomeScreen extends React.Component {
 
   getNewCatArray = () => {
     console.log(this.state.dataSource)
+    console.log(2)
     for(var i=0;i<5;i++){
+      console.log(3)
       this.setState(state => {
-        this.getNewCat();
+        var cat = this.getNewCat();
+        console.log(cat)
         const catArray = state.catArray.concat(state.dataSource);
         //not sure but this isn't currently working
         return {
@@ -45,17 +48,23 @@ export default class HomeScreen extends React.Component {
   }
 
   getNewCat () {
-    return fetch('https://api.thecatapi.com/v1/images/search')
-    .then((response) => response.json() )
-    .then((responseJson) => {
-      this.setState({
-        isLoading: false,
-        dataSource: responseJson[0].url
-      })
+    return new Promise((resolve, reject) => {
+      fetch('https://api.thecatapi.com/v1/images/search')
+        .then((response) => response.json() )
+        .then((responseJson) => {
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson[0].url
+          })
+          console.log(1)
+          return resolve(response)
+        })
+      .catch((error) => {
+        return reject(error)
+        console.log(error)
+      });
+
     })
-    .catch((error) => {
-      console.log(error)
-    });
   }
 
   render() {
