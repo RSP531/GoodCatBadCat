@@ -25,21 +25,28 @@ export default class HomeScreen extends React.Component {
   }
   componentDidMount() {
     this.getNewCat()
-    this.getNewCatArray()
+
+    this.getNewCatArray();
+    this.getNewCatArray();
+    this.getNewCatArray();
+    this.getNewCatArray();
   }
 
   getNewCatArray = () => {
-    for(var i=0;i<5;i++){
-      this.getNewCat();
-      this.setState(state => {
-        const catArray = state.catArray.concat(state.dataSource);
-        //not sure but this isn't currently working
-        return {
-          catArray,
-          dataSource : state.dataSource,
-        };
-      });
-    }
+    return fetch('https://api.thecatapi.com/v1/images/search')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState( state => {
+        const catArray = state.catArray.concat(responseJson[0].url)
+          return {
+            catArray,
+            dataSource: null,
+          }
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    });
   }
 
   getNewCat () {
@@ -57,6 +64,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    console.log(this.state.catArray)
   return (
     <View style={styles.container}>
       <ScrollView
