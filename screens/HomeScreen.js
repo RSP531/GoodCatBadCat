@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
@@ -22,6 +23,14 @@ export default class HomeScreen extends React.Component {
       dataSource:null,
       catArray: [],
     }
+    this.buttonPress = this.buttonPress.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.dataSource !== this.state.dataSource){
+      console.log('new')
+    }
+
   }
   componentDidMount() {
     this.getNewCat()
@@ -32,6 +41,7 @@ export default class HomeScreen extends React.Component {
     this.getNewCatArray();
   }
 
+
   getNewCatArray = () => {
     return fetch('https://api.thecatapi.com/v1/images/search')
     .then((response) => response.json())
@@ -40,7 +50,6 @@ export default class HomeScreen extends React.Component {
         const catArray = state.catArray.concat(responseJson[0].url)
           return {
             catArray,
-            dataSource: null,
           }
       })
     })
@@ -50,7 +59,6 @@ export default class HomeScreen extends React.Component {
   }
 
   getNewCat () {
-    return new Promise((resolve, reject) => {
       fetch('https://api.thecatapi.com/v1/images/search')
         .then((response) => response.json() )
         .then((responseJson) => {
@@ -58,16 +66,16 @@ export default class HomeScreen extends React.Component {
             isLoading: false,
             dataSource: responseJson[0].url
           })
-          console.log(1)
-          return resolve(response)
         })
       .catch((error) => {
-        return reject(error)
         console.log(error)
       });
-
-    })
   }
+
+  buttonPress(){
+    this.getNewCat()
+  }
+  
 
   render() {
     //console.log(this.state.catArray)
@@ -84,6 +92,12 @@ export default class HomeScreen extends React.Component {
                 : require('../assets/images/robot-prod.png')
             }
             style={styles.welcomeImage}
+          />
+        </View>
+        <View>
+          <Button 
+          title='Press me Rob'
+          onPress={()=>this.buttonPress()}
           />
         </View>
 
